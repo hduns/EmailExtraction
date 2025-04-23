@@ -5,15 +5,15 @@ const testFileData = fs.readFileSync('test.txt', {
     flag: 'r'
 });
 
-function checkSoftwireEmails(input) {
-    let counter = 0;
-    for(let i = 0; i < input.length; i++) {
-        if((input.substring(i, i+13)) === "@softwire.com") {
-            counter++
-        }
-    }
-    return counter;
+function countSoftwireEmails(input) {
+    const re = /[\w.'_%+-]*@softwire.com/gi;
+    const emailsArr = input.match(re);
+    console.log(emailsArr);
+    // console.log(input.match(re));
+    return emailsArr.length;
 }
 
-let softwireEmails = checkSoftwireEmails(testFileData);
-console.log(softwireEmails);
+
+let noOfSoftwireEmails = countSoftwireEmails(testFileData);
+
+console.log(noOfSoftwireEmails);
