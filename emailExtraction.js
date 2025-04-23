@@ -5,15 +5,47 @@ const testFileData = fs.readFileSync('test.txt', {
     flag: 'r'
 });
 
-function countSoftwireEmails(input) {
-    const re = /[\w.'_%+-]*@softwire.com/gi;
+const Dictionary = {};
+
+function extractEmails(input) {
+    const re = /[\w.'_%+-]*@[\w.-]*/g;
     const emailsArr = input.match(re);
-    console.log(emailsArr);
-    // console.log(input.match(re));
-    return emailsArr.length;
+    return emailsArr;
 }
 
+function createDictionary() {
+    const emailsArr = extractEmails(testFileData);
+    const emailDomains = getEmailDomains(emailsArr);
 
-let noOfSoftwireEmails = countSoftwireEmails(testFileData);
+    // Add emails domains as keys to Dictionary Object
+    const addEmailDomainKeys = emailDomains => {
+        for (let i = 0; i < emailDomains.length; i++) {
+            if (!(emailDomains[i] in Dictionary)) {
+                Dictionary[emailDomains[i]] = [];
+            }
+        }
+    }
+    addEmailDomainKeys(emailDomains);
 
-console.log(noOfSoftwireEmails);
+    // Populate email keys with values
+    for (let i = 0; i < emailsArr.length; i++) {
+        const re = /@[\w.-]*/g;
+        let domain = emailsArr[i].toString().match(re);
+
+        for (const key in Dictionary) {
+            if(key == domain) {
+                Dictionary[key].push(emailsArr[i]);
+            }
+        }
+    }
+
+}
+
+function getEmailDomains(emailsArr) {
+    const re = /@[\w.-]*/g;
+    return emailsArr.toString().match(re);
+}
+
+createDictionary();
+console.log(Dictionary);
+console.log(Dictionary['@techswitch.co.uk'].length);
