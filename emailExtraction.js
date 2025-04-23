@@ -49,3 +49,22 @@ function getEmailDomains(emailsArr) {
 createDictionary();
 console.log(Dictionary);
 console.log(Dictionary['@techswitch.co.uk'].length);
+
+const topTenEmailDomains = Dictionary => {
+    let arr = [];
+
+    for (let key in Dictionary) {
+        let keyLength = Dictionary[key].length;
+        arr.push([key, keyLength]);
+    }
+
+    arr = arr.sort((a, b) => b[1] - a[1]);
+    arr = arr.slice(0, 10);
+
+    arr = arr.map((element) => element[0]);
+    return arr;
+}
+
+console.log('top10domains:', topTenEmailDomains(Dictionary));
+
+// topTenEmailDomain(Dictionary)
