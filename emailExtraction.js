@@ -47,8 +47,6 @@ function getEmailDomains(emailsArr) {
 }
 
 createDictionary();
-console.log(Dictionary);
-console.log(Dictionary['@techswitch.co.uk'].length);
 
 const topTenEmailDomains = Dictionary => {
     let arr = [];
