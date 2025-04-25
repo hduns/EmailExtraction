@@ -48,7 +48,7 @@ function getEmailDomains(emailsArr) {
 
 createDictionary();
 
-const topTenEmailDomains = Dictionary => {
+function sortDictionary(Dictionary) {
     let arr = [];
 
     for (let key in Dictionary) {
@@ -57,12 +57,30 @@ const topTenEmailDomains = Dictionary => {
     }
 
     arr = arr.sort((a, b) => b[1] - a[1]);
-    arr = arr.slice(0, 10);
-
-    arr = arr.map((element) => element[0]);
     return arr;
 }
 
+const topTenEmailDomains = Dictionary => {
+
+    let sortedDictionary = sortDictionary(Dictionary).slice(0, 10).map((element) => element[0]);
+    return sortedDictionary;
+}
+
 console.log('top10domains:', topTenEmailDomains(Dictionary));
+
+function domainsWithFrequencyOver(number) {
+    let matchingDomains = [];
+    let sortedDictionary = sortDictionary(Dictionary).slice(0, 10);
+
+    for (let i = 0; i < sortedDictionary.length; i++) {
+        if (sortedDictionary[i][1] >= number) {
+            matchingDomains.push(sortedDictionary[i])
+        }
+    }
+    
+    return matchingDomains.length > 0 ? matchingDomains : `No domains have a frequency over ${number} in this database`;
+}
+
+console.log(domainsWithFrequencyOver(300));
 
 // topTenEmailDomain(Dictionary)
