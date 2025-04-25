@@ -21,7 +21,8 @@ function createDictionary() {
     const addEmailDomainKeys = emailDomains => {
         for (let i = 0; i < emailDomains.length; i++) {
             if (!(emailDomains[i] in Dictionary)) {
-                Dictionary[emailDomains[i]] = [];
+                let domainName = emailDomains[i].replace("@", "");
+                Dictionary[domainName] = [];
             }
         }
     }
@@ -31,9 +32,10 @@ function createDictionary() {
     for (let i = 0; i < emailsArr.length; i++) {
         const re = /@[\w.-]*/g;
         let domain = emailsArr[i].toString().match(re);
+        domain = (domain[0].replace("@", ""));
 
         for (const key in Dictionary) {
-            if(key == domain) {
+            if(key.includes(domain)) {
                 Dictionary[key].push(emailsArr[i]);
             }
         }
@@ -86,4 +88,5 @@ function convertEmailCountDictionaryToObject(dictionaryArr) {
     return dictionaryObject;
 }
 
-console.log('domainsWithFrequencyOver', domainsWithFrequencyOver(300));
+
+console.log('domainsWithFrequencyOver', domainsWithFrequencyOver(500));
