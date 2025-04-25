@@ -48,21 +48,19 @@ function getEmailDomains(emailsArr) {
 
 createDictionary();
 
-function sortDictionary(Dictionary) {
+function sortDictionaryByEmailCount(Dictionary) {
     let arr = [];
 
     for (let key in Dictionary) {
         let keyLength = Dictionary[key].length;
         arr.push([key, keyLength]);
     }
-
     arr = arr.sort((a, b) => b[1] - a[1]);
     return arr;
 }
 
 const topTenEmailDomains = Dictionary => {
-
-    let sortedDictionary = sortDictionary(Dictionary).slice(0, 10).map((element) => element[0]);
+    let sortedDictionary = sortDictionaryByEmailCount(Dictionary).slice(0, 10).map((element) => element[0]);
     return sortedDictionary;
 }
 
@@ -70,17 +68,22 @@ console.log('top10domains:', topTenEmailDomains(Dictionary));
 
 function domainsWithFrequencyOver(number) {
     let matchingDomains = [];
-    let sortedDictionary = sortDictionary(Dictionary).slice(0, 10);
+    let sortedDictionary = sortDictionaryByEmailCount(Dictionary);
 
     for (let i = 0; i < sortedDictionary.length; i++) {
         if (sortedDictionary[i][1] >= number) {
             matchingDomains.push(sortedDictionary[i])
         }
     }
-    
-    return matchingDomains.length > 0 ? matchingDomains : `No domains have a frequency over ${number} in this database`;
+    return matchingDomains.length > 0 ? convertEmailCountDictionaryToObject(matchingDomains) : `No domains have a frequency over ${number} in this database.`;
 }
 
-console.log(domainsWithFrequencyOver(300));
+function convertEmailCountDictionaryToObject(dictionaryArr) {
+    let dictionaryObject = {};
+    for (let i = 0; i < dictionaryArr.length; i++) {
+        dictionaryObject[dictionaryArr[i][0]] = dictionaryArr[i][1];
+    }
+    return dictionaryObject;
+}
 
-// topTenEmailDomain(Dictionary)
+console.log('domainsWithFrequencyOver', domainsWithFrequencyOver(300));
