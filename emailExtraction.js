@@ -21,8 +21,8 @@ function createDictionary() {
     const addEmailDomainKeys = emailDomains => {
         for (let i = 0; i < emailDomains.length; i++) {
             if (!(emailDomains[i] in Dictionary)) {
-                let domainName = emailDomains[i].replace("@", "");
-                Dictionary[domainName] = [];
+                let domainKeyName = emailDomains[i].replace("@", "");
+                Dictionary[domainKeyName] = [];
             }
         }
     }
@@ -66,7 +66,7 @@ const topTenEmailDomains = Dictionary => {
     return sortedDictionary;
 }
 
-console.log('top10domains:', topTenEmailDomains(Dictionary));
+// console.log('top10domains:', topTenEmailDomains(Dictionary));
 
 function domainsWithFrequencyOver(number) {
     let matchingDomains = [];
@@ -88,5 +88,27 @@ function convertEmailCountDictionaryToObject(dictionaryArr) {
     return dictionaryObject;
 }
 
+const secondLevelDomainDictionary = (Dictionary) => {
+    let sortedDictionary = sortDictionaryByEmailCount(Dictionary);
+    let dictionaryObject = convertEmailCountDictionaryToObject(sortedDictionary);
 
-console.log('domainsWithFrequencyOver', domainsWithFrequencyOver(500));
+    let secondLvlDomainCount = {};
+    let domainNameRE = /[\w-]*/g;
+
+    for (let domainName in dictionaryObject) {
+        let keyName = domainName.match(domainNameRE)[0];
+        if (!secondLvlDomainCount.hasOwnProperty(keyName)) {
+            secondLvlDomainCount[keyName] = 0;            
+        }
+        if (domainName.includes(keyName)) {
+            secondLvlDomainCount[keyName] += dictionaryObject[domainName];
+        }
+    }
+    return secondLvlDomainCount;
+}
+
+console.log(secondLevelDomainDictionary(Dictionary));
+
+
+
+// console.log('domainsWithFrequencyOver', domainsWithFrequencyOver(1));
